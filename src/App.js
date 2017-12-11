@@ -70,8 +70,9 @@ function getSquare(col1, col2, col3, square) {
    squareArr.join().split(",");
  }
  //convert array of strings to array of ints
- square = squareArr.map(Number);
- return square;
+ //let theSquare = squareArr.map(Number);
+ let mergedArr = [].concat.apply([], squareArr);
+ return mergedArr;
 }
   
   function checkCol(col) {
@@ -105,7 +106,15 @@ function getSquare(col1, col2, col3, square) {
     }
     return missing;
   }
-  function makeGuess(col) {
+  //store function calls in variables to use in makeGuess
+  let column1 = getColumn(0, puzzle);
+  let column2 = getColumn(1, puzzle);
+  let column3 = getColumn(2, puzzle);
+  
+  //to get next square just change the last parameter
+  let square1 = getSquare(column1, column2, column3, 1);
+  console.log(square1);
+  function makeGuess() {
     
     //show missing numbers in square
       
@@ -113,7 +122,7 @@ function getSquare(col1, col2, col3, square) {
     
     //insert missingNum in square index
   }
-  console.log(findMissingNum(newArr1));
+  //console.log(findMissingNum(newArr1));
  
  }//end main
  
@@ -121,7 +130,7 @@ function getSquare(col1, col2, col3, square) {
  
  
   //let sumOfColumn = getColumn(0,puzzle).reduce((total, value) => total + value);
-  //let sumOfSquare = getSquare(1,2,3,puzzle).reduce((total,value) => total + value);
+  //let sumOfSquare = getSquare(1,2,3,puzzle).reduce((total,value) => total + value);e(1,2,3,puzzle).reduce((total,value) => total + value);
 
 
 

@@ -4,8 +4,9 @@ import Sudoku from './Sudoku'
 import './App.css';
 
 export default class App extends Component {
-sudoku(puzzle) {
+function sudoku(puzzle) {
 let nums = [1,2,3,4,5,6,7,8,9];
+let newArr1=[1,0,0,0,4,6,7,9,11];
 
 //getter functions
 function getRow(rowNum, puzzle) {
@@ -72,13 +73,11 @@ function getSquare(col1, col2, col3, square) {
  square = squareArr.map(Number);
  return square;
 }
-
-  //let sumOfColumn = getColumn.reduce((total, value) => total + value);
-  //let sumOfSquare = getSquare.reduce((total,value) => total + value);
+  
   function checkCol(col) {
     if(sumOfColumn !== 45) {
       //see missing numbers and make a guess
-     }
+      }
     }
   function checkRow(row) {
     if(sumOfRow !== 45) {
@@ -90,7 +89,39 @@ function getSquare(col1, col2, col3, square) {
       //see missing numbers and make a guess
     }
   }
-}
+  //can pass in column, row, or square
+  function findMissingNum(arr) {
+    let missing = [];
+    let arrLength = Math.max.apply(Math, arr);
+    let newArr = arr.filter(function(num) {
+      if(num !== 0) {
+        return num;
+      }
+    });
+    for(let i = 0; i < arrLength; i++) {
+      if(arr.indexOf(i) < 0) {
+        missing.push(i);
+      }
+    }
+    return missing;
+  }
+  function makeGuess(col) {
+    
+    //show missing numbers in square
+      
+    //if number in list is not in row or column
+    
+    //insert missingNum in square index
+  }
+  console.log(findMissingNum(newArr1));
+ 
+ }//end main
+ 
+ 
+ 
+ 
+  //let sumOfColumn = getColumn(0,puzzle).reduce((total, value) => total + value);
+  //let sumOfSquare = getSquare(1,2,3,puzzle).reduce((total,value) => total + value);
 
 
 

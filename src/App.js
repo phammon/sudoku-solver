@@ -6,8 +6,23 @@ import './App.css';
 export default class App extends Component {
 function sudoku(puzzle) {
 let nums = [1,2,3,4,5,6,7,8,9];
-let newArr1=[1,0,0,0,4,6,7,9,11];
 
+function buildArrayOfGuesses(row, col, square) {
+  let numsToTry = [];
+  let theRowArr = getRow(row, puzzle);
+  numsToTry.push(findMissingNum(theRowArr));
+  let theColArr = getColumn(col, puzzle);
+  numsToTry.push(findMissingNum(theColArr));
+  let theSquareArr = getSquare(square);
+  numsToTry.push(findMissingNum(theSquareArr));
+  //join array of arrays into one array
+  let mergedArr = [].concat.apply([], numsToTry);
+  //remove duplicates using filter
+  let filteredArr = mergedArr.filter(function(num, pos, arr) {
+    return arr.indexOf(num) == pos;
+    })
+   return filteredArr;
+}
 //getter functions
 function getRow(rowNum, puzzle) {
   let row = puzzle[rowNum];
@@ -21,76 +36,81 @@ function getColumn(colNum, puzzle) {
    return col;
 }
 //squares are returned from Top to Bottom
-function getSquare(col1, col2, col3, square) {
+function getSquare(square) {
  let squareArr = []
   if(square === 1) {
-   squareArr.push(col1.slice(0, 3)) 
-   squareArr.push(col2.slice(0, 3))
-   squareArr.push(col3.slice(0, 3));
+   squareArr.push(getColumn(0,puzzle).slice(0, 3)) 
+   squareArr.push(getColumn(1,puzzle).slice(0, 3))
+   squareArr.push(getColumn(2,puzzle).slice(0, 3));
    squareArr.join().split(",");
  }else if(square === 2) {
-   squareArr.push(col1.slice(3, 6)) 
-   squareArr.push(col2.slice(3, 6))
-   squareArr.push(col3.slice(3, 6));
+   squareArr.push(getColumn(0,puzzle).slice(3, 6)) 
+   squareArr.push(getColumn(1,puzzle).slice(3, 6))
+   squareArr.push(getColumn(2,puzzle).slice(3, 6));
    squareArr.join().split(",");
  }else if(square === 3) {
-   squareArr.push(col1.slice(6, 9)) 
-   squareArr.push(col2.slice(6, 9))
-   squareArr.push(col3.slice(6, 9));
+   squareArr.push(getColumn(0,puzzle).slice(6, 9)) 
+   squareArr.push(getColumn(1,puzzle).slice(6, 9))
+   squareArr.push(getColumn(2,puzzle).slice(6, 9));
    squareArr.join().split(",");
  }else if(square === 4) {
-   squareArr.push(col1.slice(0, 3)) 
-   squareArr.push(col2.slice(0, 3))
-   squareArr.push(col3.slice(0, 3));
+   squareArr.push(getColumn(3,puzzle).slice(0, 3)) 
+   squareArr.push(getColumn(4,puzzle).slice(0, 3))
+   squareArr.push(getColumn(5,puzzle).slice(0, 3));
    squareArr.join().split(",");
  }else if(square === 5) {
-   squareArr.push(col1.slice(3, 6)) 
-   squareArr.push(col2.slice(3, 6))
-   squareArr.push(col3.slice(3, 6));
+   squareArr.push(getColumn(3,puzzle).slice(3, 6)) 
+   squareArr.push(getColumn(4,puzzle).slice(3, 6)) 
+   squareArr.push(getColumn(5,puzzle).slice(3, 6)) 
    squareArr.join().split(",");
  }else if(square === 6) {
-   squareArr.push(col1.slice(6, 9)) 
-   squareArr.push(col2.slice(6, 9))
-   squareArr.push(col3.slice(6, 9));
+   squareArr.push(getColumn(3,puzzle).slice(6, 9)) 
+   squareArr.push(getColumn(4,puzzle).slice(6, 9)) 
+   squareArr.push(getColumn(5,puzzle).slice(6, 9)) 
    squareArr.join().split(",");
  }else if(square === 7) {
-   squareArr.squarepush(col1.slice(0, 3)) 
-   squareArr.push(col2.slice(0, 3))
-   squareArr.push(col3.slice(0, 3));
+   squareArr.push(getColumn(6,puzzle).slice(0, 3)) 
+   squareArr.push(getColumn(7,puzzle).slice(0, 3)) 
+   squareArr.push(getColumn(8,puzzle).slice(0, 3)) 
    squareArr.join().split(",");
  }else if(square === 8) {
-   squareArr.push(col1.slice(3, 6)) 
-   squareArr.push(col2.slice(3, 6))
-   squareArr.push(col3.slice(3, 6));
+   squareArr.push(getColumn(6,puzzle).slice(3, 6)) 
+   squareArr.push(getColumn(7,puzzle).slice(3, 6)) 
+   squareArr.push(getColumn(8,puzzle).slice(3, 6)) 
    squareArr.join().split(",");
  }else if(square === 9) {
-   squareArr.push(col1.slice(6, 9)) 
-   squareArr.push(col2.slice(6, 9))
-   squareArr.push(col3.slice(6, 9));
+   squareArr.push(getColumn(6,puzzle).slice(6, 9)) 
+   squareArr.push(getColumn(7,puzzle).slice(6, 9)) 
+   squareArr.push(getColumn(8,puzzle).slice(6, 9)) 
    squareArr.join().split(",");
  }
  //convert array of strings to array of ints
- //let theSquare = squareArr.map(Number);
  let mergedArr = [].concat.apply([], squareArr);
  return mergedArr;
 }
   
   function checkCol(col) {
-    if(sumOfColumn !== 45) {
+    if(findTotal(col) !== 45) {
       //see missing numbers and make a guess
       }
     }
   function checkRow(row) {
-    if(sumOfRow !== 45) {
+    if(findTotal(row) !== 45) {
       //see missing numbers and make a guess
     }
   }
   function checkSquare(square) {
-    if(sumOfSquare !== 45) {
+    if(findTotal(square) !== 45) {
       //see missing numbers and make a guess
     }
   }
-  //can pass in column, row, or square
+  function findTotal(arr) {
+    let total = arr.reduce(function(sum,num) {
+      return sum + num;
+    });
+    return total;
+  }
+ //finds what numbers are missing in any array
   function findMissingNum(arr) {
     let missing = [];
     let arrLength = Math.max.apply(Math, arr);
@@ -107,32 +127,7 @@ function getSquare(col1, col2, col3, square) {
     return missing;
   }
   //store function calls in variables to use in makeGuess
-  let column1 = getColumn(0, puzzle);
-  let column2 = getColumn(1, puzzle);
-  let column3 = getColumn(2, puzzle);
-  
-  //to get next square just change the last parameter
-  let square1 = getSquare(column1, column2, column3, 1);
-  console.log(square1);
-  function makeGuess() {
-    
-    //show missing numbers in square
-      
-    //if number in list is not in row or column
-    
-    //insert missingNum in square index
-  }
-  //console.log(findMissingNum(newArr1));
- 
- }//end main
- 
- 
- 
- 
-  //let sumOfColumn = getColumn(0,puzzle).reduce((total, value) => total + value);
-  //let sumOfSquare = getSquare(1,2,3,puzzle).reduce((total,value) => total + value);e(1,2,3,puzzle).reduce((total,value) => total + value);
-
-
+}//end main
 
   render() {
     return (
